@@ -1,4 +1,16 @@
+#section-container{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
 #map{
-    width: 100%;
+    width: 60%;
     height: 600px;
+    flex:1 0;
+}
+
+#part{
+    width: 30%;
+    padding: 20px;
+    align-items: center;
 }
