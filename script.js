@@ -1,4 +1,6 @@
 const map = L.map('map').setView([34, -72], 6);
+const drawnItems = new L.FeatureGroup();
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -35,9 +37,11 @@ function fetchWindData(lat, lon) {
     fetchWindData(lat, lng).then(data => {
       const windSpeed = Math.round(1.944*data.wind.speed*100)/100;
       const windDirection = data.wind.deg;
-      document.getElementById("data").innerHTML=(`location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
+      document.getElementById("data").innerHTML+=(`<br>location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
      });
   
-    L.marker([lat, lng], {pane: 'label'}).addTo(drawnItems);
+    L.marker([lat, lng]).addTo(drawnItems);
+    map.addLayer(drawnItems);
+
 
   });
