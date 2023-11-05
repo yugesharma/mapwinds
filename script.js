@@ -1,5 +1,6 @@
 const map = L.map('map').setView([34, -72], 6);
 const drawnItems = new L.FeatureGroup();
+var route=Array();
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -42,6 +43,9 @@ function fetchWindData(lat, lon) {
   
     L.marker([lat, lng]).addTo(drawnItems);
     map.addLayer(drawnItems);
-
+    route.push([lat,lng])
+    console.log(route)
+    var polyLine=L.polyline(route).addTo(map);
+  
 
   });
