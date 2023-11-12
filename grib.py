@@ -27,6 +27,7 @@ def calculate_wind_direction(args):
             "type": "Point",
             "coordinates": [lons[j], lats[i]]
         },
+        
         "properties": {
             "wind_speed": wind_speed_formatted,
             "wind_direction": wind_direction_formatted
