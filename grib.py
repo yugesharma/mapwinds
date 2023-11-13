@@ -1,9 +1,9 @@
-from typing import Any
 import xarray as xr
 import numpy as np
 import json
 from math import atan2, degrees
 import concurrent.futures
+import dask.array as da
 import time
 start=time.time()
 
@@ -27,20 +27,22 @@ def calculate_wind_direction(args):
             "type": "Point",
             "coordinates": [lons[j], lats[i]]
         },
-        
+
         "properties": {
             "wind_speed": wind_speed_formatted,
             "wind_direction": wind_direction_formatted
         }
     }
 
-data = xr.open_dataset('era5.nc')
+data = xr.open_dataset('era5.nc', chunks={'time': 1, 'latitude': 'auto', 'longitude': 'auto'})
 
 # Extract data variables
 wind_u = data['u10']
 wind_v = data['v10']
 lats = wind_u['latitude'].values
 lons = wind_v['longitude'].values
+u_da = da.from_array(wind_u, chunks=wind_u.shape)
+v_da = da.from_array(wind_v, chunks=wind_v.shape)
 features=[]
 
 with concurrent.futures.ThreadPoolExecutor() as executor:  
@@ -48,7 +50,8 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
                                     for i in range(wind_v.shape[1])
                                     for j in range(wind_u.shape[2])]
     
-    features = list(executor.map(calculate_wind_direction, args_list))
+    with concurrent.futures.ThreadPoolExecutor() as executor:  
+        features = list(executor.map(calculate_wind_direction, args_list))
 
 geojson_data = {
     "type": "FeatureCollection",
