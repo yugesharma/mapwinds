@@ -34,7 +34,14 @@ def calculate_wind_direction(args):
         }
     }
 
-data = xr.open_dataset('era5.nc', chunks={'time': 1, 'latitude': 'auto', 'longitude': 'auto'})
+data = xr.open_dataset('era5.nc')
+u = data['u10'].chunk(chunks={'time': 1, 'latitude': 121, 'longitude': 481})
+v = data['v10'].chunk(chunks={'time': 1, 'latitude': 121, 'longitude': 481})
+lats = u['latitude'].values
+lons = u['longitude'].values
+
+u_da = da.from_array(u, chunks=u.shape)
+v_da = da.from_array(v, chunks=v.shape)
 
 # Extract data variables
 wind_u = data['u10']
@@ -45,13 +52,12 @@ u_da = da.from_array(wind_u, chunks=wind_u.shape)
 v_da = da.from_array(wind_v, chunks=wind_v.shape)
 features=[]
 
-with concurrent.futures.ThreadPoolExecutor() as executor:  
-    args_list = [(t, i, j, wind_u, wind_v) for t in range(wind_u.shape[0])
+args_list = [(t, i, j, wind_u, wind_v) for t in range(wind_u.shape[0])
                                     for i in range(wind_v.shape[1])
                                     for j in range(wind_u.shape[2])]
     
-    with concurrent.futures.ThreadPoolExecutor() as executor:  
-        features = list(executor.map(calculate_wind_direction, args_list))
+with concurrent.futures.ThreadPoolExecutor() as executor:  
+    features = list(executor.map(calculate_wind_direction, args_list))
 
 geojson_data = {
     "type": "FeatureCollection",
