@@ -35,8 +35,8 @@ def calculate_wind_direction(args):
     }
 
 data = xr.open_dataset('era5.nc')
-u = data['u10'].chunk(chunks={'time': 1, 'latitude': 121, 'longitude': 481})
-v = data['v10'].chunk(chunks={'time': 1, 'latitude': 121, 'longitude': 481})
+u = data['u10'].chunk(chunks={'time': 1, 'latitude': -1, 'longitude': -1})
+v = data['v10'].chunk(chunks={'time': 1, 'latitude': -1, 'longitude': -1})
 lats = u['latitude'].values
 lons = u['longitude'].values
 
