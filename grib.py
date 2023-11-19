@@ -42,8 +42,8 @@ def calculate_wind_data(t, i, j, u, v, lats, lons):
     }
 
 if __name__ == '__main__':
-    u_dask = da.from_array(u.data, chunks=(1, u.shape[1], u.shape[2]))
-    v_dask = da.from_array(v.data, chunks=(1, v.shape[1], v.shape[2]))
+    u_dask = da.from_array(u.data, chunks=(100, 50, 50))
+    v_dask = da.from_array(v.data, chunks=(100, 50, 50))
 
     features = []
 

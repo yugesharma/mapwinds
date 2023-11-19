@@ -49,3 +49,18 @@ function fetchWindData(lat, lon) {
   
 
   });
+
+  function addGeoJSONToMap() {
+    fetch('output.geojson') 
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            L.geoJSON(data).addTo(map);
+        })
+        .catch(function (error) {
+            console.error('Error loading GeoJSON:', error);
+        });
+}
+
+addGeoJSONToMap();
