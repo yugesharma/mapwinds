@@ -50,6 +50,7 @@ function fetchWindData(lat, lon) {
 
   });
 
+  var infoBox=document.getElementById('info-box');
 
 function addGeoJSONToMap() {
     fetch('output.geojson') 
@@ -65,12 +66,15 @@ function addGeoJSONToMap() {
                         Wind Speed: ${properties.wind_speed} m/s
                         Wind Direction: ${properties.wind_direction} degrees`;
                         console.log(content)
-                    var infoBox=document.getElementById('info-box');
                     infoBox.innerHTML = content;
+                    infoBox.style.left = (e.originalEvent.pageX + 100) + 'px';
+                    infoBox.style.top = (e.originalEvent.pageY - 28) + 'px';
+                    infoBox.style.display = 'block';
                 });
 
                 layer.on('mouseout', function () {
                     infoBox.innerHTML = '';
+                    
                 });
             }
         }).addTo(map);
