@@ -14,3 +14,10 @@
     padding: 20px;
     align-items: center;
 }
+
+#info-box {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none; 
+    display: none;
+}

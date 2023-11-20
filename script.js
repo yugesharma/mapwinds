@@ -50,17 +50,35 @@ function fetchWindData(lat, lon) {
 
   });
 
-  function addGeoJSONToMap() {
+
+function addGeoJSONToMap() {
     fetch('output.geojson') 
         .then(function (response) {
             return response.json();
         })
-        .then(function (data) {
-            L.geoJSON(data).addTo(map);
-        })
+        .then(function(data) {
+          var geojsonLayer = L.geoJSON(data, {
+            onEachFeature: function (feature, layer) {
+                layer.on('mouseover', function (e) {
+                    var properties = feature.properties;
+                    var content = `
+                        Wind Speed: ${properties.wind_speed} m/s
+                        Wind Direction: ${properties.wind_direction} degrees`;
+                        console.log(content)
+                    var infoBox=document.getElementById('info-box');
+                    infoBox.innerHTML = content;
+                });
+
+                layer.on('mouseout', function () {
+                    infoBox.innerHTML = '';
+                });
+            }
+        }).addTo(map);
+    })
         .catch(function (error) {
             console.error('Error loading GeoJSON:', error);
         });
 }
-
 addGeoJSONToMap();
+
+
