@@ -16,9 +16,7 @@
 }
 
 #info-box {
-    position: absolute;
-    padding: 10px;
-    pointer-events: none; 
-    display: none;
-    margin-left: 400px;
+    width: 30%;
+    padding: 20px;
+    align-items: center;
 }

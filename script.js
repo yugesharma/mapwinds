@@ -58,31 +58,39 @@ function addGeoJSONToMap() {
             return response.json();
         })
         .then(function(data) {
-          var geojsonLayer = L.geoJSON(data, {
-            onEachFeature: function (feature, layer) {
-                layer.on('mouseover', function (e) {
-                    var properties = feature.properties;
-                    var content = `
-                        Wind Speed: ${properties.wind_speed} m/s
-                        Wind Direction: ${properties.wind_direction} degrees`;
-                        console.log(content)
-                    infoBox.innerHTML = content;
-                    infoBox.style.left = (e.originalEvent.pageX + 100) + 'px';
-                    infoBox.style.top = (e.originalEvent.pageY - 28) + 'px';
-                    infoBox.style.display = 'block';
-                });
+          var geojsonLayer = L.vectorGrid.slicer(data, {
+            rendererFactory: L.svg.tile,
+            vectorTileLayerStyles: {
+              sliced: function(properties, zoom) {
+                return {
+                  radius: properties.wind_speed,
+                  fillColor: 'blue',
+                  fillOpacity: 0.6,
+                };
+              },
+            },
+          }).addTo(map);
+    
+          geojsonLayer.on('mouseover', function(e) {
+            var layer = e.layer;
+            var properties = layer.feature.properties;
+            var content = `Wind Speed: ${properties.wind_speed} m/s<br>
+              Wind Direction: ${properties.wind_direction} degrees`;
+            infoBox.innerHTML = content;
+            infoBox.style.display = 'block';
+          });
 
-                layer.on('mouseout', function () {
+                geojsonLayer.on('mouseout', function () {
                     infoBox.innerHTML = '';
-                    
                 });
-            }
-        }).addTo(map);
-    })
+            })
         .catch(function (error) {
             console.error('Error loading GeoJSON:', error);
         });
 }
+
+
 addGeoJSONToMap();
+
 
 
