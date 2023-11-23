@@ -58,20 +58,18 @@ function addGeoJSONToMap() {
             return response.json();
         })
         .then(function(data) {
-          var geojsonLayer = L.vectorGrid.slicer(data, {
-            rendererFactory: L.svg.tile,
-            vectorTileLayerStyles: {
-              sliced: function(properties, zoom) {
-                return {
-                  radius: properties.wind_speed,
-                  fillColor: 'blue',
-                  fillOpacity: 0.6,
-                };
-              },
-            },
-          }).addTo(map);
+          var geojsonLayer = L.geoJSON(data);
+          console.log(data)
+          for(let i=0; i<10; i++) {
+            var windSpeed = data.features[i].properties.wind_speed;
+            var windDirection = data.features[i].properties.wind_direction;
+            var icon = L.WindBarb.icon({ speed: windSpeed, deg: windDirection });
+            var marker = L.marker([data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]], { icon: icon }).addTo(map);
+        }
     
-          geojsonLayer.on('mouseover', function(e) {
+
+
+          data.on('mouseover', function(e) {
             var layer = e.layer;
             var properties = layer.feature.properties;
             var content = `Wind Speed: ${properties.wind_speed} m/s<br>
@@ -80,7 +78,7 @@ function addGeoJSONToMap() {
             infoBox.style.display = 'block';
           });
 
-                geojsonLayer.on('mouseout', function () {
+                data.on('mouseout', function () {
                     infoBox.innerHTML = '';
                 });
             })
