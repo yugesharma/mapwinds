@@ -60,10 +60,12 @@ function addGeoJSONToMap() {
         .then(function(data) {
           var geojsonLayer = L.geoJSON(data);
           console.log(data)
-          for(let i=0; i<10; i++) {
+          for(let i=0; i<data.features.length; i++) {
             var windSpeed = data.features[i].properties.wind_speed;
             var windDirection = data.features[i].properties.wind_direction;
-            var icon = L.WindBarb.icon({ speed: windSpeed, deg: windDirection });
+            var windArrowIconHtml = document.getElementById('wind-arrow-icon-container').innerHTML;
+            var icon = L.divIcon({
+            className: 'wind-arrow-icon', html: windArrowIconHtml.replace('{{windDirection}}', windDirection),});
             var marker = L.marker([data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]], { icon: icon }).addTo(map);
         }
     
