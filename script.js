@@ -60,13 +60,19 @@ function addGeoJSONToMap() {
         .then(function(data) {
           var geojsonLayer = L.geoJSON(data);
           console.log(data)
-          for(let i=0; i<data.features.length; i++) {
+          for(let i=0; i<data.features.length/4; i++) {
             var windSpeed = data.features[i].properties.wind_speed;
             var windDirection = data.features[i].properties.wind_direction;
-            var windArrowIconHtml = document.getElementById('wind-arrow-icon-container').innerHTML;
-            var icon = L.divIcon({
-            className: 'wind-arrow-icon', html: windArrowIconHtml.replace('{{windDirection}}', windDirection),});
-            var marker = L.marker([data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]], { icon: icon }).addTo(map);
+            var arrowColor = '';
+            if (windSpeed < 5) {
+                arrowColor = 'green';  
+            } else if (windSpeed < 10) {
+                arrowColor = 'orange'; 
+            } else {
+                arrowColor = 'red';    
+            }
+            var windArrowIcon = L.divIcon({className: 'wind-arrow-icon', html: `<div style="font-size: 20px; transform: rotate(${windDirection}deg); color: ${arrowColor};">&#8593;</div>`});
+            var marker = L.marker([data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]], { icon: windArrowIcon }).addTo(map);
         }
     
 
