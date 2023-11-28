@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 const map = L.map('map').setView([34, -72], 6);
 const drawnItems = new L.FeatureGroup();
 var route=Array();
@@ -50,53 +52,41 @@ function fetchWindData(lat, lon) {
 
   });
 
-  var infoBox=document.getElementById('info-box');
+  function getColor(speed) {
+    if (speed < 5) {
+      return 'green';
+    } else if (speed < 10) {
+      return 'yellow';
+    } else {
+      return 'red';
+    }
+  }
 
-function addGeoJSONToMap() {
-    fetch('output.geojson') 
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function(data) {
-          var geojsonLayer = L.geoJSON(data);
-          console.log(data)
-          for(let i=0; i<data.features.length/4; i++) {
-            var windSpeed = data.features[i].properties.wind_speed;
-            var windDirection = data.features[i].properties.wind_direction;
-            var arrowColor = '';
-            if (windSpeed < 5) {
-                arrowColor = 'green';  
-            } else if (windSpeed < 10) {
-                arrowColor = 'orange'; 
-            } else {
-                arrowColor = 'red';    
-            }
-            var windArrowIcon = L.divIcon({className: 'wind-arrow-icon', html: `<div style="font-size: 20px; transform: rotate(${windDirection}deg); color: ${arrowColor};">&#8593;</div>`});
-            var marker = L.marker([data.features[i].geometry.coordinates[1], data.features[i].geometry.coordinates[0]], { icon: windArrowIcon }).addTo(map);
-        }
-    
+  function updateWindData(selectedDate) {
+    $.get('final.csv', function (data) {
+      const rows = data.split('\n');
+      for (let i = 1; i < rows.length - 1; i+=4) {
+        const row = rows[i].split(',');
+        const time = row[0];
+        if (time.includes(selectedDate)) {
+          const latitude = parseFloat(row[1]);
+          const longitude = parseFloat(row[2]);
+          const windSpeed = parseFloat(row[6]);
+          const windDirection = parseFloat(row[7]);
+          console.log(latitude)
 
-
-          data.on('mouseover', function(e) {
-            var layer = e.layer;
-            var properties = layer.feature.properties;
-            var content = `Wind Speed: ${properties.wind_speed} m/s<br>
-              Wind Direction: ${properties.wind_direction} degrees`;
-            infoBox.innerHTML = content;
-            infoBox.style.display = 'block';
+          const arrowIcon = L.divIcon({
+            className: 'wind-arrow-icon',
+            iconSize: [100, 100],
+            html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
           });
+  
+          L.marker([latitude, longitude], { icon: arrowIcon }).addTo(map);
+        }
+      }
+    });
+  }
+  
+updateWindData('2023-11-28')
 
-                data.on('mouseout', function () {
-                    infoBox.innerHTML = '';
-                });
-            })
-        .catch(function (error) {
-            console.error('Error loading GeoJSON:', error);
-        });
-}
-
-
-addGeoJSONToMap();
-
-
-
+});
