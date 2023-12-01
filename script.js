@@ -1,6 +1,11 @@
 $(document).ready(function () {
 
 const map = L.map('map').setView([34, -72], 6);
+map.createPane('label');
+map.getPane('label').style.zIndex = 1000;
+var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
 const drawnItems = new L.FeatureGroup();
 var route=Array();
 
@@ -33,25 +38,6 @@ function fetchWindData(lat, lon) {
 
 //Capture user click postion and display data obtained from API
 
-  map.on('click', function (e) {
-    const lat = e.latlng.lat;
-    const lng = e.latlng.lng;
-  
-    fetchWindData(lat, lng).then(data => {
-      const windSpeed = Math.round(1.944*data.wind.speed*100)/100;
-      const windDirection = data.wind.deg;
-      document.getElementById("data").innerHTML+=(`<br>location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
-     });
-  
-    L.marker([lat, lng]).addTo(drawnItems);
-    map.addLayer(drawnItems);
-    route.push([lat,lng])
-    console.log(route)
-    var polyLine=L.polyline(route).addTo(map);
-  
-
-  });
-
   function getColor(speed) {
     if (speed < 5) {
       return 'green';
@@ -65,7 +51,7 @@ function fetchWindData(lat, lon) {
   function updateWindData(selectedDate) {
     $.get('final.csv', function (data) {
       const rows = data.split('\n');
-      for (let i = 1; i < rows.length - 1; i+=4) {
+      for (let i = 1; i < rows.length - 1; i++) {
         const row = rows[i].split(',');
         const time = row[0];
         if (time.includes(selectedDate)) {
@@ -77,7 +63,7 @@ function fetchWindData(lat, lon) {
 
           const arrowIcon = L.divIcon({
             className: 'wind-arrow-icon',
-            iconSize: [100, 100],
+            iconSize: [10, 10],
             html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
           });
   
@@ -89,4 +75,23 @@ function fetchWindData(lat, lon) {
   
 updateWindData('2023-11-28')
 
+map.on('click', function (e) {
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+
+  fetchWindData(lat, lng).then(data => {
+    const windSpeed = Math.round(1.944*data.wind.speed*100)/100;
+    const windDirection = data.wind.deg;
+    document.getElementById("data").innerHTML+=(`<br>location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
+   });
+
+  L.marker([lat, lng]).addTo(drawnItems);
+  map.addLayer(drawnItems);
+  route.push([lat,lng])
+  var polyLine=L.polyline(route, [{className:'line', pane: 'label'}]).addTo(map);
+  polyLine.bringToFront();
+
 });
+
+});
+

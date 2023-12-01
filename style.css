@@ -24,3 +24,7 @@
 .wind-arrow-icon{
     z-index: 500;
 }
+
+.line{
+    z-index: 1000;
+}
