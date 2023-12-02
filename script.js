@@ -94,6 +94,20 @@ map.on('click', function (e) {
   route.push([lat,lng])
   polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
   polyLine.bringToFront();
+
+  });
+  fetch('countries.geojson')
+  .then(response => response.json())
+  .then(data => {
+    const geoJsonLayer = L.geoJSON(data, { pane: 'label' }).addTo(map);
+    geoJsonLayer.setStyle({
+      color: '#dea450',
+      weight: 1,
+      fillOpacity: 1,
+    });
+  })
+  .catch(error => {
+    console.error('Error loading GeoJSON data:', error);
   });
 });
 
