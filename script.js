@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-const map = L.map('map').setView([34, -72], 6);
+const map = L.map('map').setView([34, 10], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -8,6 +8,7 @@ var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     }).addTo(map);
 const drawnItems = new L.FeatureGroup();
 var route=Array();
+var polyLine;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -51,7 +52,7 @@ function fetchWindData(lat, lon) {
   function updateWindData(selectedDate) {
     $.get('final.csv', function (data) {
       const rows = data.split('\n');
-      for (let i = 1; i < rows.length - 1; i++) {
+      for (let i = 1; i < rows.length - 1; i+=4) {
         const row = rows[i].split(',');
         const time = row[0];
         if (time.includes(selectedDate)) {
@@ -59,7 +60,6 @@ function fetchWindData(lat, lon) {
           const longitude = parseFloat(row[2]);
           const windSpeed = parseFloat(row[6]);
           const windDirection = parseFloat(row[7]);
-          console.log(latitude)
 
           const arrowIcon = L.divIcon({
             className: 'wind-arrow-icon',
@@ -85,13 +85,15 @@ map.on('click', function (e) {
     document.getElementById("data").innerHTML+=(`<br>location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
    });
 
+   if (polyLine) {
+    map.removeLayer(polyLine);
+  }
+
   L.marker([lat, lng]).addTo(drawnItems);
   map.addLayer(drawnItems);
   route.push([lat,lng])
-  var polyLine=L.polyline(route, [{className:'line', pane: 'label'}]).addTo(map);
+  polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
   polyLine.bringToFront();
-
-});
-
+  });
 });
 
