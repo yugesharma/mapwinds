@@ -72,8 +72,13 @@ function fetchWindData(lat, lon) {
       }
     });
   }
+  element=document.getElementById('date');
+  element.onchange=function update() {
+    var date=document.getElementById("date").value;
+    updateWindData(date);
+  console.log(date)}
   
-updateWindData('2023-11-28')
+  
 
 map.on('click', function (e) {
   const lat = e.latlng.lat;
