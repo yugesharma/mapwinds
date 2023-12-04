@@ -50,6 +50,11 @@ function fetchWindData(lat, lon) {
   }
 
   function updateWindData(selectedDate) {
+    map.eachLayer(function (layer) {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
     $.get('final.csv', function (data) {
       const rows = data.split('\n');
       for (let i = 1; i < rows.length - 1; i+=4) {
