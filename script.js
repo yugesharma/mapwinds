@@ -83,6 +83,13 @@ function fetchWindData(lat, lon) {
     updateWindData(date);
   console.log(date)}
   
+  var dateSlider=document.getElementById("dateslider");
+  dateSlider.onchange= function dateS() {
+    const selectedDay = new Date();
+    selectedDay.setDate(selectedDay.getDate() + parseInt(dateSlider.value));
+    const formattedDate = `${selectedDay.getFullYear()}-${(selectedDay.getMonth() + 1).toString().padStart(2, '0')}-${selectedDay.getDate().toString().padStart(2, '0')}`;
+    console.log(formattedDate)};
+ 
   
 
 map.on('click', function (e) {
