@@ -84,11 +84,15 @@ function fetchWindData(lat, lon) {
   console.log(date)}
   
   var dateSlider=document.getElementById("dateslider");
+  const selectedDate = document.getElementById("selectedDate");
+
   dateSlider.onchange= function dateS() {
     const selectedDay = new Date();
     selectedDay.setDate(selectedDay.getDate() + parseInt(dateSlider.value));
     const formattedDate = `${selectedDay.getFullYear()}-${(selectedDay.getMonth() + 1).toString().padStart(2, '0')}-${selectedDay.getDate().toString().padStart(2, '0')}`;
     console.log(formattedDate)};
+    selectedDate.textContent = formattedDate;
+
  
   
 
