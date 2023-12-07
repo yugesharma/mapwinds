@@ -27,13 +27,14 @@
   <script src="leaflet-windbarb.js"></script>
   <div id="section-container">
     
-    <div id="map"></div>
+    <div id="map">
+      <div id="loadingIndicator" class="loading"></div>
+    </div>
     <div id="part">
       <h2>Select co-ordinates on the map to get data</h2>
       <div id="data"></div>
-      <div id='info-box'>wind data</div>
+      <div id='info-box'></div>
       <label>Wind data for</label>
-      <input type="date" id="date" name="Wind data" >
       <input class="date" type="range" id="dateslider" min="0" max="6" step="1" value="0"/>
       <div id='selectedDate'>date</div>
 

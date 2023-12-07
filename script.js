@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-const map = L.map('map').setView([34, 10], 6);
+const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
 var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,6 +50,8 @@ function fetchWindData(lat, lon) {
   }
 
   function updateWindData(selectedDate) {
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    loadingIndicator.style.display = 'block';
     map.eachLayer(function (layer) {
       if (layer instanceof L.Marker) {
         map.removeLayer(layer);
@@ -73,26 +75,22 @@ function fetchWindData(lat, lon) {
           });
   
           L.marker([latitude, longitude], { icon: arrowIcon }).addTo(map);
+          loadingIndicator.style.display = 'none';
+
         }
       }
     });
   }
-  element=document.getElementById('date');
-  element.onchange=function update() {
-    var date=document.getElementById("date").value;
-    updateWindData(date);
-  console.log(date)}
   
   var dateSlider=document.getElementById("dateslider");
-  const selectedDate = document.getElementById("selectedDate");
 
   dateSlider.onchange= function dateS() {
     const selectedDay = new Date();
     selectedDay.setDate(selectedDay.getDate() + parseInt(dateSlider.value));
     const formattedDate = `${selectedDay.getFullYear()}-${(selectedDay.getMonth() + 1).toString().padStart(2, '0')}-${selectedDay.getDate().toString().padStart(2, '0')}`;
-    console.log(formattedDate)};
-    selectedDate.textContent = formattedDate;
-
+    updateWindData(formattedDate);
+    document.getElementById("selectedDate").innerHTML = formattedDate;
+  }
  
   
 
