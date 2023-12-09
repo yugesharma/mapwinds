@@ -53,7 +53,7 @@ function fetchWindData(lat, lon) {
     const loadingIndicator = document.getElementById('loadingIndicator');
     loadingIndicator.style.display = 'block';
     map.eachLayer(function (layer) {
-      if (layer instanceof L.Marker) {
+      if (layer instanceof L.Marker && layer.options.markerType=='wind') {
         map.removeLayer(layer);
       }
     });
@@ -74,7 +74,7 @@ function fetchWindData(lat, lon) {
             html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
           });
   
-          L.marker([latitude, longitude], { icon: arrowIcon }).addTo(map);
+          L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
           loadingIndicator.style.display = 'none';
 
         }
