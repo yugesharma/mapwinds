@@ -83,6 +83,8 @@ function fetchWindData(lat, lon) {
   }
   
   var dateSlider=document.getElementById("dateslider");
+  var play= document.getElementById("play");
+
 
   dateSlider.onchange= function dateS() {
     const selectedDay = new Date();
@@ -91,8 +93,6 @@ function fetchWindData(lat, lon) {
     updateWindData(formattedDate);
     document.getElementById("selectedDate").innerHTML = formattedDate;
   }
- 
-  
 
 map.on('click', function (e) {
   const lat = e.latlng.lat;
@@ -130,3 +130,15 @@ map.on('click', function (e) {
   });
 });
 
+play.onclick = function(){
+  for (let i = 0; i < 7; i++) {
+    var endDateformat = new Date(new Date().setDate(new Date().getDate() + i));
+
+    // Format the year, month, and day with double digits
+    var year = endDateformat.getFullYear();
+    var month = (endDateformat.getMonth() + 1).toString().padStart(2, '0');
+    var day = endDateformat.getDate().toString().padStart(2, '0');
+    
+    var endDate = year + '-' + month + '-' + day;
+    updateWindData(endDate);
+  }};
