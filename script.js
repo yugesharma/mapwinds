@@ -141,4 +141,5 @@ play.onclick = function(){
     
     var endDate = year + '-' + month + '-' + day;
     updateWindData(endDate);
+    dateSlider.value = i;
   }};
