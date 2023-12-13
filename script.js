@@ -9,6 +9,11 @@ var tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const drawnItems = new L.FeatureGroup();
 var route=Array();
 var polyLine;
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+var yyyy = today.getFullYear();
+today = yyyy + '-' + mm + '-' + dd;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -49,6 +54,8 @@ function fetchWindData(lat, lon) {
     }
   }
 
+  updateWindData('2023-12-08');
+
   function updateWindData(selectedDate) {
     const loadingIndicator = document.getElementById('loadingIndicator');
     loadingIndicator.style.display = 'block';
@@ -83,6 +90,7 @@ function fetchWindData(lat, lon) {
   }
   
   var dateSlider=document.getElementById("dateslider");
+  dateSlider.defaultValue = '2023-12-08';
   var play= document.getElementById("play");
 
 
