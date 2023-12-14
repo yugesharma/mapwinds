@@ -138,9 +138,11 @@ map.on('click', function (e) {
     console.error('Error loading GeoJSON data:', error);
   });
 
+document.getElementById("selectedDate").defaultValue = today;
+dateSlider.value = 0; 
+selectedDate.textContent = today;
 
 play.onclick = function(){
-  
   myLoop();
   };
 
