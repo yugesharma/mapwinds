@@ -14,6 +14,7 @@ var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); 
 var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
+var i=0;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -54,7 +55,7 @@ function fetchWindData(lat, lon) {
     }
   }
 
-  updateWindData('2023-12-08');
+  updateWindData(today);
 
   function updateWindData(selectedDate) {
     const loadingIndicator = document.getElementById('loadingIndicator');
@@ -90,7 +91,7 @@ function fetchWindData(lat, lon) {
   }
   
   var dateSlider=document.getElementById("dateslider");
-  dateSlider.defaultValue = '2023-12-08';
+  dateSlider.defaultValue = today;
   var play= document.getElementById("play");
 
 
@@ -136,19 +137,32 @@ map.on('click', function (e) {
   .catch(error => {
     console.error('Error loading GeoJSON data:', error);
   });
-});
+
 
 play.onclick = function(){
-  for (let i = 0; i < 7; i++) {
-    var endDateformat = new Date(new Date().setDate(new Date().getDate() + i));
+  
+  myLoop();
+  };
 
+  function myLoop() {
+    setTimeout(function() {
+    var endDateformat = new Date(new Date().setDate(new Date().getDate() + i));
     // Format the year, month, and day with double digits
     var year = endDateformat.getFullYear();
     var month = (endDateformat.getMonth() + 1).toString().padStart(2, '0');
     var day = endDateformat.getDate().toString().padStart(2, '0');
-    
     var endDate = year + '-' + month + '-' + day;
-    updateWindData(endDate);
+    animate(endDate);
     dateSlider.value = i;
     document.getElementById("selectedDate").innerHTML = endDate;
-  }};
+    i++;
+    if (i<7) {
+      myLoop();
+    }
+    }, 2000)
+  }
+
+  function animate(date) {
+    updateWindData(date);
+  }
+});
