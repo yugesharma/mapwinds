@@ -15,6 +15,7 @@ var mm = String(today.getMonth() + 1).padStart(2, '0');
 var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 var i=0;
+var tables="";
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -110,7 +111,12 @@ map.on('click', function (e) {
   fetchWindData(lat, lng).then(data => {
     const windSpeed = Math.round(1.944*data.wind.speed*100)/100;
     const windDirection = data.wind.deg;
-    document.getElementById("data").innerHTML+=(`<br>location ${toDMS(lat,lng)} Wind speed ${windSpeed} Wind direction ${windDirection}`);
+    tables+="<tr>"+
+    "<td class='position' >"+ toDMS(lat, lng) +"</td>"+
+    "<td class='windSpeed'>"+ windSpeed +"</td>"+
+    "<td class='windDirection'>"+ windDirection+"°"+"</td>"
+    +"</tr>"
+    document.getElementById("selected").innerHTML=tables;
    });
 
    if (polyLine) {
