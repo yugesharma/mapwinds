@@ -67,3 +67,15 @@
     cursor: pointer;
   }
 
+  .position {
+    width: 52%;
+  }
+  
+  .windSpeed {
+    width: 24%;
+  }
+  
+  .windDirection {
+    width: 24%;
+  }
+
