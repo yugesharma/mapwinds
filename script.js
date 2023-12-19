@@ -58,7 +58,7 @@ function fetchWindData(lat, lon) {
 
   updateWindData(today);
 
-  function updateWindData(selectedDate) {
+  async function updateWindData(selectedDate) {
     const loadingIndicator = document.getElementById('loadingIndicator');
     loadingIndicator.style.display = 'block';
     map.eachLayer(function (layer) {
