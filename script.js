@@ -14,7 +14,7 @@ var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); 
 var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
-var i=0;
+var i=1;
 var tables="";
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -85,7 +85,6 @@ function fetchWindData(lat, lon) {
   
           L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
           loadingIndicator.style.display = 'none';
-
         }
       }
     });
@@ -148,9 +147,18 @@ document.getElementById("selectedDate").defaultValue = today;
 dateSlider.value = 0; 
 selectedDate.textContent = today;
 
+var loader = document.getElementById('loader');
+loader.style.display = 'none';
+
+
 play.onclick = function(){
-  myLoop();
-  };
+  loader.style.display = 'block';
+  i=1;
+	myLoop();
+  setTimeout(function() {
+    loader.style.display = 'none';
+}, 7 * 2000);	};
+
 
   function myLoop() {
     setTimeout(function() {
@@ -169,6 +177,7 @@ play.onclick = function(){
     }
     }, 2000)
   }
+
 
   function animate(date) {
     updateWindData(date);

@@ -40,7 +40,19 @@
     height: 20px;
     z-index: 1000;
     animation: spin 2s linear infinite;
+  }
 
+  #loader {
+    position: absolute;
+    margin-top: 10%;
+    left: 50%;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    z-index: 1000;
+    animation: spin 2s linear infinite;
   }
 
   @keyframes spin {
