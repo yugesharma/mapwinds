@@ -152,7 +152,7 @@ loader.style.display = 'none';
 
 
 play.onclick = function(){
-  loader.style.display = 'block';
+  loader.style.display = 'inline';
   i=1;
 	myLoop();
   setTimeout(function() {

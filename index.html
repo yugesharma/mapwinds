@@ -14,6 +14,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
   <h1 id="title">Map Winds</h1>
@@ -25,32 +26,48 @@
   <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
   <script src="leaflet.geometryutil.js"></script> 
   <script src="leaflet-windbarb.js"></script>
-  <div id="section-container">
-    
-    <div id="map">
-      <div id="loadingIndicator" class="loading"></div>
-    </div>
-    <div id="part">
-      <h2>Select co-ordinates on the map to get data</h2>
-      <table style="width: 100%">
-        <tr>
-          <th style="width: 52%">Position</th>
-          <th style="width: 24%">Wind speed (knots)</th>
-          <th style="width: 24%">Wind direction (degrees)</th>
-        </tr>
-        <table id="selected" style="width: 100%"></table>
-      </table>
-      <div id="data"></div>
-      <div id='info-box'></div>
-      <label>Wind data for</label>
-      <input class="date" type="range" id="dateslider" min="0" max="6" step="1" value="0"/>
-      <div id="loader"></div>
-      <button id="play"><img src="play.png" /></button>
-      <div id='selectedDate'>date</div>
+  <div class="page-container">
+    <div id="route"></div>
+    <div class="section-container">
+      <section class="map-section">
+        <div id="map">
+          <div id="loadingIndicator" class="loading"></div>
+        </div>
+      </section>
 
- 
+      <section id="part">
+        <p class="smallHeading">
+          Select co-ordinates on the map to get real time data and plan your
+          route
+        </p>
+        <div id="mytext">
+          <table style="width: 100%">
+            <tr>
+              <th style="width: 52%">Position</th>
+              <th style="width: 24%">Wind speed (knots)</th>
+              <th style="width: 24%">Wind direction (degrees)</th>
+            </tr>
+            <table id="selected" style="width: 100%"></table>
+          </table>
+        </div>
+      </section>
+
+      <div class="play-container">
+        <div class="play-section">
+          <input class="date" type="range" id="dateslider" min="0" max="6" step="1" value="0"/>
+          <div class="loader-container">
+            <div id="loader" class="loader"></div>
+          </div>
+          <button id="play"><img src="play.png" /></button>
+        </div>
+        <p class="date">
+          Selected Date:
+          <span id="selectedDate" id="selectedDate">2023-10-12</span>
+        </p>
+      </div>
+    </div>
   </div>
- </div>
+
   <script src="script.js"></script>
   </body>
 </html>

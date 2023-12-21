@@ -1,12 +1,29 @@
-#section-container{
-    display: flex;
-    flex-wrap: nowrap;
+body {
+  background-color: #f1dac4;
+  margin: 0;
+  padding: 0;
+  max-height: 100vh;
 }
 
-#map{
-    width: 60%;
-    height: 600px;
-    flex:1 0;
+.page-container {
+  max-width: 1920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.map-section {
+  flex-grow: 1;
+  height: 600px;
+}
+
+#map {
+  margin-top: 2px;
+  height: 100%;
 }
 
 #part{
@@ -43,9 +60,6 @@
   }
 
   #loader {
-    position: absolute;
-    margin-top: 10%;
-    left: 50%;
     border: 6px solid #f3f3f3;
     border-top: 6px solid #3498db;
     border-radius: 50%;
