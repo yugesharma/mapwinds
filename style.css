@@ -30,6 +30,7 @@ body {
     width: 30%;
     padding: 20px;
     align-items: center;
+    overflow-y: auto;
 }
 
 #info-box {
@@ -44,6 +45,12 @@ body {
 
 .line{
     z-index: 5000;
+}
+
+#mytext {
+  width: 430px;
+  text-align: center;
+  margin: auto;
 }
 
 .loading {
@@ -78,6 +85,16 @@ body {
     }
   }
 
+  .play-container {
+    width: 100%;
+  }
+  
+  .play-section {
+    display: flex;
+    gap: 2rem;
+    margin-left: 0.6rem;
+  }
+
   #play {
     height: 30px;
     width: 30px;
@@ -105,3 +122,22 @@ body {
     width: 24%;
   }
 
+  #dateslider {
+    display: block;
+    margin-top: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 10px;
+    width: 40%;
+    height: 25px;
+    background: #496a81;
+    outline: none;
+    opacity: 0.8;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+    margin-left: 0;
+  }
+  
+  #dateslider:hover {
+    opacity: 0.5;
+  }
