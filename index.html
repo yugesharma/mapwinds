@@ -23,9 +23,9 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""
   ></script>
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
   <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
   <script src="leaflet.geometryutil.js"></script> 
-  <script src="leaflet-windbarb.js"></script>
 
   <div class="page-container">
     <div id="route"></div>
@@ -42,6 +42,8 @@
           Select co-ordinates on the map to get real time data and plan your
           route
         </p>
+        <button id="btn-login" disabled="true" onclick="login()">Log in</button>
+        <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
         <div id="mytext">
           <table style="width: 100%">
             <tr>

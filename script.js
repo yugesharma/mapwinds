@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+  let auth0Client = null;
+  const fetchAuthConfig = () => fetch("/auth_config.json");
+  const configureClient = async () => {
+    const response = await fetchAuthConfig();
+    const config = await response.json();
+  
+    auth0Client = await auth0.createAuth0Client({
+      domain: config.domain,
+      clientId: config.clientId
+    });
+  };
+  window.onload = async () => {
+    await configureClient();
+  }
+
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
@@ -16,7 +31,6 @@ var yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 var i=1;
 var tables="";
-var markersToAdd = [];
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -83,16 +97,12 @@ function fetchWindData(lat, lon) {
             iconSize: [10, 10],
             html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
           });
-          
-          var marker = L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' });
-          markersToAdd.push(marker);
-          //L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
+  
+          L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
           loadingIndicator.style.display = 'none';
         }
       }
-      var shipCoordinateMarker = L.layerGroup(markersToAdd);
-      map.addLayer(shipCoordinateMarker);  
-        });
+    });
   }
   
   var dateSlider=document.getElementById("dateslider");
