@@ -1,19 +1,21 @@
+auth0.createAuth0Client({
+  domain: "dev-wkeroudvhv73deo2.us.auth0.com",
+  clientId: "JkB9GW2GNJ5p7Wc8mcJXDXONybfBXPi4",
+  authorizationParams: {
+    redirect_uri: window.location.origin
+  }
+}).then(async (auth0Client) => {
+
+  
+
 $(document).ready(function () {
 
-  let auth0Client = null;
-  const fetchAuthConfig = () => fetch("/auth_config.json");
-  const configureClient = async () => {
-    const response = await fetchAuthConfig();
-    const config = await response.json();
-  
-    auth0Client = await auth0.createAuth0Client({
-      domain: config.domain,
-      clientId: config.clientId
-    });
-  };
-  window.onload = async () => {
-    await configureClient();
-  }
+  const loginButton = document.getElementById("login");
+
+  loginButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    auth0Client.loginWithRedirect();
+  });
 
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
@@ -197,4 +199,6 @@ play.onclick = function(){
   function animate(date) {
     updateWindData(date);
   }
+});
+
 });
