@@ -5,6 +5,17 @@ body {
   max-height: 100vh;
 }
 
+.heading-container{
+  display: flex;
+  align-items: center;
+
+}
+
+#profile{
+  margin-left: auto;
+  padding: 20px;
+}
+
 .page-container {
   max-width: 1920px;
   margin-left: auto;

@@ -17,7 +17,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 <body>
+
+  <div class="heading-container">
   <h1 id="title">Map Winds</h1>
+  <h3 id="profile"></h3>
+  </div>
+
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -28,6 +33,7 @@
   <script src="leaflet.geometryutil.js"></script> 
 
   <div class="page-container">
+
     <div id="route"></div>
     <div class="section-container">
 
@@ -36,13 +42,14 @@
           <div id="loadingIndicator" class="loading"></div>
         </div>
       </section>
-
       <section id="part">
         <p class="smallHeading">
           Select co-ordinates on the map to get real time data and plan your
           route
         </p>
         <button id="login">Log in</button>
+        <button id="logout">Log out</button>
+
         <div id="mytext">
           <table style="width: 100%">
             <tr>
