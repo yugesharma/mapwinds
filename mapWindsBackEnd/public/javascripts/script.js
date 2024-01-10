@@ -46,18 +46,19 @@ const logoutButton = document.getElementById("logout");
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
-const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-    }).addTo(map);
+
 const drawnItems = new L.FeatureGroup();
 const route=Array();
-const today = new Date();
+let polyLine;
+let today = new Date();
 const dd = String(today.getDate()).padStart(2, '0');
 const mm = String(today.getMonth() + 1).padStart(2, '0'); 
 const yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 const i=1;
-const tables="";
+let tables="";
+
+updateWindData(today);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -74,17 +75,8 @@ function toDMS(lat,lng) {
   return cord;
   }
 
-function getColor(speed) {
-  if (speed < 5) {
-    return 'green';
-  } else if (speed < 10) {
-    return 'yellow';
-  } else {
-    return 'red';
-  }
-}
 
-updateWindData(today);
+// Create wind markers
 
 async function updateWindData(selectedDate) {
   const loadingIndicator = document.getElementById('loadingIndicator');
@@ -94,7 +86,7 @@ async function updateWindData(selectedDate) {
       map.removeLayer(layer);
     }
   });
-  $.get('final.csv', function (data) {
+  $.get('../resources/final.csv', function (data) {
     const rows = data.split('\n');
     for (let i = 1; i < rows.length - 1; i+=4) {
       const row = rows[i].split(',');
@@ -118,12 +110,24 @@ async function updateWindData(selectedDate) {
   });
 }
 
+function getColor(speed) {
+  if (speed < 5) {
+    return 'green';
+  } else if (speed < 10) {
+    return 'yellow';
+  } else {
+    return 'red';
+  }
+}
+
+
+// Date slider
+
 const dateSlider=document.getElementById("dateslider");
 dateSlider.defaultValue = today;
 const play= document.getElementById("play");
 
-
-dateSlider.onchange= function dateS() {
+dateSlider.onchange= () => {
   const selectedDay = new Date();
   selectedDay.setDate(selectedDay.getDate() + parseInt(dateSlider.value));
   const formattedDate = `${selectedDay.getFullYear()}-${(selectedDay.getMonth() + 1).toString().padStart(2, '0')}-${selectedDay.getDate().toString().padStart(2, '0')}`;
@@ -132,7 +136,7 @@ dateSlider.onchange= function dateS() {
 }
 
 
-//Capture user click postion and display data obtained from API
+// Capture user click postion and display data obtained from API
 
 map.on('click', function (e) {
   const lat = e.latlng.lat;
@@ -156,24 +160,24 @@ map.on('click', function (e) {
   L.marker([lat, lng]).addTo(drawnItems);
   map.addLayer(drawnItems);
   route.push([lat,lng]);
-  const polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
+  polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
   polyLine.bringToFront();
   });
 
-  async function fetchWindData(lat, lng) {
-    const apiUrl=`/openweather?lat=${lat}&lon=${lng}`;
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      return data;
+async function fetchWindData(lat, lng) {
+  const apiUrl=`/openweather?lat=${lat}&lon=${lng}`;
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    return data;
 
-   } catch (error) {
-     console.error('Error fetching wind data:', error);
-     throw new Error('Unable to fetch wind data');
-   }
- }
+  } catch (error) {
+    console.error('Error fetching wind data:', error);
+    throw new Error('Unable to fetch wind data');
+  }
+}
 
-fetch('countries.geojson')
+fetch('../resources/countries.geojson')
 .then(response => response.json())
 .then(data => {
   const geoJsonLayer = L.geoJSON(data, { pane: 'label' }).addTo(map);
@@ -198,13 +202,13 @@ loader.style.display = 'none';
 play.onclick = function(){
   loader.style.display = 'inline';
   i=1;
-	myLoop();
+	animateWind();
   setTimeout(function() {
     loader.style.display = 'none';
 }, 7 * 2000);	};
 
 
-function myLoop() {
+function animateWind() {
   setTimeout(function() {
   const endDateformat = new Date(new Date().setDate(new Date().getDate() + i));
   // Format the year, month, and day with double digits
@@ -212,18 +216,15 @@ function myLoop() {
   const month = (endDateformat.getMonth() + 1).toString().padStart(2, '0');
   const day = endDateformat.getDate().toString().padStart(2, '0');
   const endDate = year + '-' + month + '-' + day;
-  animate(endDate);
+  updateWindData(date);
   dateSlider.value = i;
   document.getElementById("selectedDate").innerHTML = endDate;
   i++;
   if (i<7) {
-    myLoop();
+    animateWind();
   }
   }, 2000)
 }
 
-function animate(date) {
-  updateWindData(date);
-}
 });
 
