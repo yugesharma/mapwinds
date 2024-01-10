@@ -132,6 +132,7 @@ dateSlider.onchange= () => {
   selectedDay.setDate(selectedDay.getDate() + parseInt(dateSlider.value));
   const formattedDate = `${selectedDay.getFullYear()}-${(selectedDay.getMonth() + 1).toString().padStart(2, '0')}-${selectedDay.getDate().toString().padStart(2, '0')}`;
   updateWindData(formattedDate);
+  apiDB(formattedDate);
   document.getElementById("selectedDate").innerHTML = formattedDate;
 }
 
@@ -224,6 +225,19 @@ function animateWind() {
     animateWind();
   }
   }, 2000)
+}
+
+async function apiDB(date) {
+  const apiUrl=`/apiDB?date=${date}`;
+  // try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    console.log(data);
+
+  // } catch (error) {
+  //   console.error('Error fetching DB data:', error);
+  //   throw new Error('Unable to fetch DB data');
+  // }
 }
 
 });
