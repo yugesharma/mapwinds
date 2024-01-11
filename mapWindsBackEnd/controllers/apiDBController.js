@@ -14,16 +14,9 @@ pool.connect();
 
 exports.apiDB=asyncHandler(async (req, res, next) => {
      const date = req.query.date;
-     pool.query(`SELECT * from mapwinder where time like '${date}%' LIMIT 5`, (error, res) => {
-        if (error) {
-            return next(error);
-        }
-        console.log(res.rows);
-        // res.status(200).json(results.rows)
+     const result=await pool.query(`SELECT * from mapwinder where  index%4=0 and time like '${date}%' `)  
+     res.status(200).json(result.rows);
      })
-    // const response= await fetch(apiUrl);
-    // const data= await response.json();
-})
 
 pool.end;
 

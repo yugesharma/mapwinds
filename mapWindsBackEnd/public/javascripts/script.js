@@ -64,6 +64,19 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+fetch('../resources/countries.geojson')
+.then(response => response.json())
+.then(data => {
+  const geoJsonLayer = L.geoJSON(data, { pane: 'label' }).addTo(map);
+  geoJsonLayer.setStyle({
+    color: '#dea450',
+    weight: 1,
+    fillOpacity: 1,
+  });
+})
+.catch(error => {
+  console.error('Error loading GeoJSON data:', error);
+});
 
 //convert co-ordinates from decimal to degrees and minutes
 
@@ -86,28 +99,7 @@ async function updateWindData(selectedDate) {
       map.removeLayer(layer);
     }
   });
-  $.get('../resources/final.csv', function (data) {
-    const rows = data.split('\n');
-    for (let i = 1; i < rows.length - 1; i+=4) {
-      const row = rows[i].split(',');
-      const time = row[0];
-      if (time.includes(selectedDate)) {
-        const latitude = parseFloat(row[1]);
-        const longitude = parseFloat(row[2]);
-        const windSpeed = parseFloat(row[6]);
-        const windDirection = parseFloat(row[7]);
-
-        const arrowIcon = L.divIcon({
-          className: 'wind-arrow-icon',
-          iconSize: [10, 10],
-          html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
-        });
-
-        L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
-        loadingIndicator.style.display = 'none';
-      }
-    }
-  });
+  
 }
 
 function getColor(speed) {
@@ -229,16 +221,30 @@ function animateWind() {
 
 async function apiDB(date) {
   const apiUrl=`/apiDB?date=${date}`;
-  // try {
+  
+  try {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    console.log(data);
+    for (let i = 1; i < data.length - 1; i++) {
+      const latitude = parseFloat(data[i].latitude);
+      const longitude = parseFloat(data[i].longitude);
+      const windSpeed = parseFloat(data[i].WS);
+      const windDirection = parseFloat(data[i].WD);
+      const arrowIcon = L.divIcon({
+        className: 'wind-arrow-icon',
+        iconSize: [10, 10],
+        html: '<div style="transform: rotate(' + windDirection + 'deg)"><i class="fas fa-arrow-up" style="color: ' + getColor(windSpeed) + ';"></i></div>'
+      });
 
-  // } catch (error) {
-  //   console.error('Error fetching DB data:', error);
-  //   throw new Error('Unable to fetch DB data');
-  // }
+      L.marker([latitude, longitude], { icon: arrowIcon, markerType: 'wind' }).addTo(map);
+      loadingIndicator.style.display = 'none';
+    
+  } 
+
+  } catch (error) {
+    console.error('Error fetching DB data:', error);
+    throw new Error('Unable to fetch DB data');
+  }
 }
-
 });
 
