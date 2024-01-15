@@ -1,48 +1,5 @@
 
-  auth0.createAuth0Client({
-    domain: "dev-wkeroudvhv73deo2.us.auth0.com",
-    clientId: "JkB9GW2GNJ5p7Wc8mcJXDXONybfBXPi4",
-    authorizationParams: {
-      redirect_uri: window.location.origin
-    }
-  }).then(async (auth0Client) => {
-
-  const loginButton = document.getElementById("login");
-
-  loginButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    auth0Client.loginWithRedirect();
-  });
-
-  if (location.search.includes("state=") && 
-  (location.search.includes("code=") || 
-  location.search.includes("error="))) {
-await auth0Client.handleRedirectCallback();
-window.history.replaceState({}, document.title, "/");
-}
-
-const logoutButton = document.getElementById("logout");
-
-  logoutButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    auth0Client.logout();
-  });
   
-  const isAuthenticated = await auth0Client.isAuthenticated();
-  const userProfile = await auth0Client.getUser();
-
-  const profileElement = document.getElementById("profile");
-
-  if (isAuthenticated) {
-    profileElement.style.display = "block";
-    profileElement.innerHTML = `Hello, ${userProfile.name}`;
-    // <img src="${userProfile.picture}" />
-  } 
-  else {
-    profileElement.style.display = "none";
-  }
-
-
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
@@ -56,6 +13,8 @@ const mm = String(today.getMonth() + 1).padStart(2, '0');
 const yyyy = today.getFullYear();
 today = yyyy + '-' + mm + '-' + dd;
 let tables="";
+let i=1;
+
 
 updateWindData(today);
 
@@ -154,7 +113,6 @@ async function changeDate(date) {
   try {
     const response = await fetch(apiUrl);
     const data = await response.text();
-    console.log(data)
     document.getElementById("selectedDate").innerHTML = data;
     return data;
 
@@ -228,6 +186,7 @@ loader.style.display = 'none';
 
 play.onclick = function(){
   loader.style.display = 'inline';
+  i=1;
 	animateWind();
   setTimeout(function() {
     loader.style.display = 'none';
@@ -242,7 +201,7 @@ function animateWind() {
   const month = (endDateformat.getMonth() + 1).toString().padStart(2, '0');
   const day = endDateformat.getDate().toString().padStart(2, '0');
   const endDate = year + '-' + month + '-' + day;
-  updateWindData(date);
+  updateWindData(endDate);
   dateSlider.value = i;
   document.getElementById("selectedDate").innerHTML = endDate;
   i++;
@@ -250,5 +209,5 @@ function animateWind() {
     animateWind();
     }
   }, 2000)
-}});
 
+};
