@@ -26,7 +26,7 @@ html
             #loadingIndicator.loading
         section#part
           p.smallHeading Select co-ordinates on the map to get real-time data and plan your route
-          button#login Log in
+          a(href="/auth/google"): button(type="button") Log in
           button#logout Log out
           #mytext
             table(style='width: 100%')

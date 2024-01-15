@@ -1,5 +1,48 @@
 
+//   auth0.createAuth0Client({
+//     domain: "dev-wkeroudvhv73deo2.us.auth0.com",
+//     clientId: "JkB9GW2GNJ5p7Wc8mcJXDXONybfBXPi4",
+//     authorizationParams: {
+//       redirect_uri: window.location.origin
+//     }
+//   }).then(async (auth0Client) => {
+
+//   const loginButton = document.getElementById("login");
+
+//   loginButton.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     auth0Client.loginWithRedirect();
+//   });
+
+//   if (location.search.includes("state=") && 
+//   (location.search.includes("code=") || 
+//   location.search.includes("error="))) {
+// await auth0Client.handleRedirectCallback();
+// window.history.replaceState({}, document.title, "/");
+// }
+
+// const logoutButton = document.getElementById("logout");
+
+//   logoutButton.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     auth0Client.logout();
+//   });
   
+//   const isAuthenticated = await auth0Client.isAuthenticated();
+//   const userProfile = await auth0Client.getUser();
+
+//   const profileElement = document.getElementById("profile");
+
+//   if (isAuthenticated) {
+//     profileElement.style.display = "block";
+//     profileElement.innerHTML = `Hello, ${userProfile.name}`;
+//     // <img src="${userProfile.picture}" />
+//   } 
+//   else {
+//     profileElement.style.display = "none";
+//   }
+
+
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 1000;
@@ -210,4 +253,6 @@ function animateWind() {
     }
   }, 2000)
 
-};
+}
+
+//});
