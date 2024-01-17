@@ -12,7 +12,9 @@ html
   body
     .heading-container
       h1#title Map Winds
-      h3#profile
+      if(user!=null)
+        h3#profile Hello #{user} 
+      
     script(src='https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js')
     script(src='https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js')
     script(src='leaflet.geometryutil.js')

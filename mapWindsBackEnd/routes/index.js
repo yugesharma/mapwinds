@@ -11,15 +11,23 @@ router.use(session({secret: "cats"}));
 router.use(passport.initialize());
 router.use(passport.session());
 
+router.use(function(req, res, next) {
+  res.locals.user = req.user; 
+  next();
+});
+
 function isLoggedIn(req, res, next) {
   req.user ? next() : res.sendStatus(401);
 }
 
-
-
-/* GET home page. */
+// GET home page
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
+});
+
+router.get('/protected', function(req, res, next) {
+  console.log(req.user.displayName);
+  res.render('index', {user:req.user.displayName});
 });
 
 router.get("/openWeather", openWeatherController.openWeather);
@@ -39,9 +47,9 @@ router.get("/google/callback",
   })
 );
 
-  router.get("/protected", isLoggedIn, (req, res) => {
-    res.send(`Hello ${req.user.displayName}`);
-  })
+  // router.get("/protected", isLoggedIn, (req, res) => {
+  //   res.send(`Hello ${req.user.displayName}`);
+  // })
 
   router.get('/auth/failure', (req, res) => {
     res.send("logged failed");
