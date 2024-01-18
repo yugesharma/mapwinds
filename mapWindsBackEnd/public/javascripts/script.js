@@ -188,6 +188,7 @@ map.on('click', function (e) {
   L.marker([lat, lng]).addTo(drawnItems);
   map.addLayer(drawnItems);
   route.push([lat,lng]);
+  console.log(route);
   polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
   polyLine.bringToFront();
   });
