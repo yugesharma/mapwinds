@@ -59,25 +59,22 @@ let tables="";
 let i=1;
 
 
-updateWindData(today);
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-fetch('../resources/countries.geojson')
+fetch('../resources/ocean.geojson')
 .then(response => response.json())
 .then(data => {
-  const geoJsonLayer = L.geoJSON(data, { pane: 'label' }).addTo(map);
+  const geoJsonLayer = L.geoJSON(data).addTo(map);
   geoJsonLayer.setStyle({
-    color: '#dea450',
+    color: '#94b6ef',
     weight: 1,
-    fillOpacity: 1,
+    fillOpacity: 0.8,
   });
 })
 .catch(error => {
   console.error('Error loading GeoJSON data:', error);
 });
+
+
+updateWindData(today);
 
 //convert co-ordinates from decimal to degrees and minutes
 function toDMS(lat,lng) {
@@ -206,6 +203,7 @@ async function fetchWindData(lat, lng) {
     throw new Error('Unable to fetch wind data');
   }
 }
+
 
 fetch('../resources/countries.geojson')
 .then(response => response.json())

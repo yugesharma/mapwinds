@@ -121,6 +121,22 @@ body {
     cursor: pointer;
   }
 
+  table, th, td, tr {
+    margin-top: 1px;
+    border: 1px solid white;
+    background-color: #e68c3a;
+    border-collapse: collapse;
+    padding: 8px;
+  }
+  
+  #mytext {
+    width: 430px;
+    color:#ffffff;
+    text-align: center;
+    margin:auto; 
+  }
+  
+
   .position {
     width: 52%;
   }
