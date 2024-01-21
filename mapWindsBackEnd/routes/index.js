@@ -5,6 +5,12 @@ const auth=require('../auth')
 const openWeatherController = require("../controllers/openWeatherController")
 const apiDBController = require("../controllers/apiDBController")
 const changeDateController = require("../controllers/changeDateController");
+const routeController = require("../controllers/routeController");
+const pool = require("../public/resources/db");
+
+
+pool.connect();
+
 const passport = require('passport');
 
 router.use(session({secret: "cats"}));
@@ -48,9 +54,6 @@ router.get("/google/callback",
   })
 );
 
-  // router.get("/protected", isLoggedIn, (req, res) => {
-  //   res.send(`Hello ${req.user.displayName}`);
-  // })
 
   router.get('/auth/failure', (req, res) => {
     res.send("logged failed");
@@ -64,6 +67,12 @@ router.get('/logout', (req, res) => {
 
 });
 
+router.post('/route/save', isLoggedIn, (async(req, res, next) => {
+    
+  await pool.query("INSERT INTO routes (route, author_id) VALUES ($1, $2)",
+  [req.body.post, req.user.id])
+  res.status(200).send();      
+}));
 
 
 module.exports = router;

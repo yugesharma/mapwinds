@@ -134,6 +134,18 @@ function getColor(speed) {
   }
 }
 
+const save= document.getElementById("save");
+
+save.onclick = async function(){
+    const response = await fetch("/route/save", {
+      method : "POST",
+      body : route,
+      credentials : "include",
+      headers: { "Content-Type" : "application/html"}
+    })
+};
+
+
 
 // Date slider
 const dateSlider=document.getElementById("dateslider");
