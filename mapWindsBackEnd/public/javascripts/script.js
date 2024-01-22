@@ -139,9 +139,9 @@ const save= document.getElementById("save");
 save.onclick = async function(){
     const response = await fetch("/route/save", {
       method : "POST",
-      body : route,
+      body : JSON.stringify(route),
       credentials : "include",
-      headers: { "Content-Type" : "application/html"}
+      headers: { "Content-Type" : "application/json"}
     })
 };
 

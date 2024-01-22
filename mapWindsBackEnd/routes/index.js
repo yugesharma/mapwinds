@@ -68,9 +68,12 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/route/save', isLoggedIn, (async(req, res, next) => {
-    
-  await pool.query("INSERT INTO routes (route, author_id) VALUES ($1, $2)",
-  [req.body.post, req.user.id])
+  const route = [
+    [23.22, 42.34],
+    [24.53, 40.38],
+    [25.12, 38.91]
+  ];  await pool.query("INSERT INTO routes (route, author_id) VALUES ($1, $2)",
+  [route, req.user.id.id])
   res.status(200).send();      
 }));
 

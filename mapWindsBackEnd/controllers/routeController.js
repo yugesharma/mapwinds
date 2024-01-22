@@ -6,10 +6,17 @@ const pool = require("../public/resources/db");
 pool.connect();
 
 exports.save=asyncHandler (async(req, res, next) => {
-    
-    await pool.query("INSERT INTO routes (route, author_id) VALUES ($1, $2)",
-    [req.body.post, req.user.id])
-    res.status(200).send();      
+    const route = "routeString"
+    const a='a';
+    const b ='b';
+    const c =3;
+    try {
+        await pool.query('INSERT INTO test (col1, col2, key) VALUES ($1, $2 $3)',
+        [a, b, c])
+        res.status(200).send('check');
+    } catch (error) {
+        console.log(error);
+    }      
 });
 
 pool.end;
