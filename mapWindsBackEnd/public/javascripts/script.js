@@ -45,7 +45,7 @@
 
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
-map.getPane('label').style.zIndex = 1000;
+map.getPane('label').style.zIndex = 20;
 
 const drawnItems = new L.FeatureGroup();
 const route=Array();
@@ -134,15 +134,27 @@ function getColor(speed) {
   }
 }
 
+const savePrompt= document.getElementById("savePrompt");
+var modal = document.getElementById("routeNameModal");
+var span = document.getElementsByClassName("close")[0];
 const save= document.getElementById("save");
 
+
+savePrompt.onclick = function() {
+  modal.style.display = "block";
+}
+
+
+
 save.onclick = async function(){
-    const response = await fetch("/route/save", {
-      method : "POST",
-      body : JSON.stringify(route),
-      credentials : "include",
-      headers: { "Content-Type" : "application/json"}
-    })
+  const routeName=document.getElementById("routeName").value;
+  const response = await fetch("/route/save", {
+    method : "POST",
+    body : JSON.stringify({route:route, routeName:routeName}),
+    credentials : "include",
+    headers: { "Content-Type" : "application/json"}
+  });
+  modal.style.display = "none";
 };
 
 
