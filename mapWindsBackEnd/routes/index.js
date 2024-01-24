@@ -67,11 +67,9 @@ router.get('/logout', (req, res) => {
 
 });
 
-router.post('/route/save', isLoggedIn, (async(req, res, next) => {
-  await pool.query("INSERT INTO routes (routeName, route, author_id) VALUES ($1, $2, $3)",
-  [req.body.routeName, req.body.route, req.user.id.id])
-  res.status(200).send();      
-}));
+router.post('/route/save', isLoggedIn, routeController.save);
+
+router.get('/route/show', isLoggedIn, routeController.show);
 
 
 module.exports = router;

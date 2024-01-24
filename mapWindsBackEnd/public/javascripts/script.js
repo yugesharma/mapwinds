@@ -134,6 +134,7 @@ function getColor(speed) {
   }
 }
 
+//Save route
 const savePrompt= document.getElementById("savePrompt");
 var modal = document.getElementById("routeNameModal");
 var span = document.getElementsByClassName("close")[0];
@@ -143,8 +144,6 @@ const save= document.getElementById("save");
 savePrompt.onclick = function() {
   modal.style.display = "block";
 }
-
-
 
 save.onclick = async function(){
   const routeName=document.getElementById("routeName").value;
@@ -156,6 +155,16 @@ save.onclick = async function(){
   });
   modal.style.display = "none";
 };
+
+//Show saved routes
+const showRoute= document.getElementById("showRoute");
+
+showRoute.onclick = async function() {
+  const response = await fetch('/route/show');
+    const data = await response.json();
+    console.log(data);
+}
+
 
 
 
@@ -209,7 +218,6 @@ map.on('click', function (e) {
   L.marker([lat, lng]).addTo(drawnItems);
   map.addLayer(drawnItems);
   route.push([lat,lng]);
-  console.log(route);
   polyLine=L.polyline(route, {className:'line', pane: 'label'}).addTo(map);
   polyLine.bringToFront();
   });
