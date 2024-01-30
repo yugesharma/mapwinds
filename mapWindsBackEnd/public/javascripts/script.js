@@ -162,7 +162,8 @@ const showRoute= document.getElementById("showRoute");
 showRoute.onclick = async function() {
   const response = await fetch('/route/show');
     const data = await response.json();
-    console.log(data);
+    document.getElementById("listRoutes").innerHTML = data.rows[0].routename+data.rows[0].route;
+    console.log(data.rows.routename);
 }
 
 
