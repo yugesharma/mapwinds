@@ -1,48 +1,3 @@
-
-//   auth0.createAuth0Client({
-//     domain: "dev-wkeroudvhv73deo2.us.auth0.com",
-//     clientId: "JkB9GW2GNJ5p7Wc8mcJXDXONybfBXPi4",
-//     authorizationParams: {
-//       redirect_uri: window.location.origin
-//     }
-//   }).then(async (auth0Client) => {
-
-//   const loginButton = document.getElementById("login");
-
-//   loginButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     auth0Client.loginWithRedirect();
-//   });
-
-//   if (location.search.includes("state=") && 
-//   (location.search.includes("code=") || 
-//   location.search.includes("error="))) {
-// await auth0Client.handleRedirectCallback();
-// window.history.replaceState({}, document.title, "/");
-// }
-
-// const logoutButton = document.getElementById("logout");
-
-//   logoutButton.addEventListener("click", (e) => {
-//     e.preventDefault();
-//     auth0Client.logout();
-//   });
-  
-//   const isAuthenticated = await auth0Client.isAuthenticated();
-//   const userProfile = await auth0Client.getUser();
-
-//   const profileElement = document.getElementById("profile");
-
-//   if (isAuthenticated) {
-//     profileElement.style.display = "block";
-//     profileElement.innerHTML = `Hello, ${userProfile.name}`;
-//     // <img src="${userProfile.picture}" />
-//   } 
-//   else {
-//     profileElement.style.display = "none";
-//   }
-
-
 const map = L.map('map').setView([34, -72], 6);
 map.createPane('label');
 map.getPane('label').style.zIndex = 20;
@@ -136,7 +91,7 @@ function getColor(speed) {
 
 //Save route
 const savePrompt= document.getElementById("savePrompt");
-var modal = document.getElementById("routeNameModal");
+var routeNameModal = document.getElementById("routeNameModal");
 var span = document.getElementsByClassName("close")[0];
 const save= document.getElementById("save");
 
@@ -153,17 +108,27 @@ save.onclick = async function(){
     credentials : "include",
     headers: { "Content-Type" : "application/json"}
   });
-  modal.style.display = "none";
+  routeNameModal.style.display = "none";
 };
 
 //Show saved routes
-const showRoute= document.getElementById("showRoute");
+const showRoutes= document.getElementById("showRoutes");
+var showRoutesModal = document.getElementById("showRoutesModal");
 
-showRoute.onclick = async function() {
+
+
+showRoutes.onclick = async function() {
+  showRoutesModal.style.display = "block";
   const response = await fetch('/route/show');
     const data = await response.json();
-    document.getElementById("listRoutes").innerHTML = data.rows[0].routename+data.rows[0].route;
-    console.log(data.rows.routename);
+    console.log(data.rows);
+    let routes="";
+    for(let i=0; i<data.rows.length; i++){
+      routes=routes+data.rows[i].routename+"<br>";
+    }
+    document.getElementById("listRoutes").innerHTML = routes;
+    console.log(routes)
+    
 }
 
 
@@ -286,5 +251,3 @@ function animateWind() {
   }, 2000)
 
 }
-
-//});

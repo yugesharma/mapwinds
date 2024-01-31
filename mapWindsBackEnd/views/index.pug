@@ -37,19 +37,26 @@ html
                 th(style='width: 24%') Wind speed (knots)
                 th(style='width: 24%') Wind direction (degrees)
               table#selected(style='width: 100%')
-            button#savePrompt(type="button") Save
-            
-            button#showRoute(type="button") Show routes
-            p.Routes
-              | Routes shown
-            span#listRoutes
 
+            button#savePrompt(type="button") Save
             #routeNameModal.modal 
               .modal-content
-                
                 label(for='routeName') Enter a name for the route:  
                 input#routeName(type='text', name='routeName', value='', placeholder='Bombay to Goa')
                 button#save(type="button") Save
+
+            button#showRoutes(type="button") Show routes
+            p.showRoutes
+              | Routes shown
+            
+
+            #showRoutesModal.modal 
+              .modal-content
+                p.listRoutesBox 
+                  | List of routes 
+                span#listRoutes 
+
+            
         .play-container
           .play-section
             input.date(type='range', id='dateslider', min='0', max='6', step='1', value='0')
